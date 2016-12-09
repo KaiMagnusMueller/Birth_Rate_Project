@@ -95,8 +95,8 @@ function bubbleChart() {
                 radius: radiusScale(+d.Year1950),
                 value: d.Year1950,
                 name: d.Location,
-                x: Math.random() * 900,
-                y: Math.random() * 800
+                x: (width / 2 - 400) + Math.random() * 800,
+                y: Math.random() * 900
             };
         });
 
