@@ -170,9 +170,11 @@ function bubbleChart() {
             // .on('mouseout', hideDetail)
             .on("click", nodesAsButtons);
 
-        d3.selectAll("svg")
+        bubbles
             .append("circle")
-            .attr('r', 3)
+            .attr('r', function (d) {
+            return d.radius / 10;
+        })
             .attr('cx',100).attr('cy',100)
             .attr('fill', "#FF0000");
 
