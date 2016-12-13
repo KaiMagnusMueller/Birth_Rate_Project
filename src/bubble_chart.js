@@ -95,8 +95,8 @@ function bubbleChart() {
                 radius: radiusScale(+d.Year1950),
                 value: d.Year1950,
                 name: d.Location,
-                x: 0,
-                y: 0
+                x: (width / 2 - 400) + Math.random() * 800,
+                y: Math.random() * 900
             };
         });
 
@@ -141,8 +141,6 @@ function bubbleChart() {
             .attr('width', width)
             .attr('height', height);
 
-        // var bubbleGroup = svg.append("g");
-
         // Bind nodes data to what will become DOM elements to represent them.
         bubbles = svg.selectAll('.bubble')
             .data(nodes, function (d) {
@@ -152,29 +150,18 @@ function bubbleChart() {
         // Create new circle elements each with class `bubble`.
         // There will be one circle.bubble for each object in the nodes array.
         // Initially, their radius (r attribute) will be 0.
-
-        bubbles.enter().append("svg")
+        bubbles.enter().append('circle')
             .classed('bubble', true)
             .attr("id", function (d) {
                 return d.id;
             })
-            .append('circle')
-            .attr('r', function (d) {
-                return d.radius;
-            })
-            .attr('cx',100).attr('cy',100)
+            .attr('r', 0)
             .attr('fill', fillColor)
             // .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
             .attr('stroke-width', 1)
             // .on('mouseover', showDetail)
             // .on('mouseout', hideDetail)
             .on("click", nodesAsButtons);
-
-        d3.selectAll("svg")
-            .append("circle")
-            .attr('r', 3)
-            .attr('cx',100).attr('cy',100)
-            .attr('fill', "#FF0000");
 
         // Fancy transition to make bubbles appear, ending with the
         // correct radius
@@ -199,10 +186,10 @@ function bubbleChart() {
 
         force.on('tick', function (e) {
             bubbles.each(moveToCenter(e.alpha))
-                .attr('x', function (d) {
+                .attr('cx', function (d) {
                     return d.x;
                 })
-                .attr('y', function (d) {
+                .attr('cy', function (d) {
                     return d.y;
                 });
         });
