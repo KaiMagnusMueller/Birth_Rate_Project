@@ -96,7 +96,9 @@ function bubbleChart() {
                 value: d.Year1950,
                 name: d.Location,
                 x: (width / 2 - 400) + Math.random() * 800,
-                y: Math.random() * 900
+                y: Math.random() * 900,
+                xPos: d.xPosdata,
+                yPos: d.yPosdata
             };
         });
 
@@ -157,6 +159,8 @@ function bubbleChart() {
             .attr("id", function (d) {
                 return d.id;
             })
+            .classed("container", true)
+            .attr("transform-origin", center)
             .append('circle')
             .classed("MainBubbles", true)
             .attr('r', 0)
@@ -168,12 +172,12 @@ function bubbleChart() {
             // .on('mouseout', hideDetail)
             .on("click", nodesAsButtons);
 
-        bubbles
-            .append("circle")
-            .classed("SecondaryBubbles", true)
-            .attr('r', 0)
-            .attr('cx',100).attr('cy',100)
-            .attr('fill', "#FF0000");
+        // bubbles
+        //     .append("circle")
+        //     .classed("SecondaryBubbles", true)
+        //     .attr('r', 0)
+        //     .attr('cx',100).attr('cy',100)
+        //     .attr('fill', "#FF0000");
 
         // Fancy transition to make bubbles appear, ending with the
         // correct radius
@@ -183,11 +187,11 @@ function bubbleChart() {
                 return d.radius;
             });
 
-        svg.selectAll(".SecondaryBubbles").transition()
-            .duration(2000)
-            .attr('r', function (d) {
-                return d.radius / 10;
-            });
+        // svg.selectAll(".SecondaryBubbles").transition()
+        //     .duration(2000)
+        //     .attr('r', function (d) {
+        //         return d.radius / 10;
+        //     });
 
         // Set initial layout to single group.
         groupBubbles();
@@ -274,9 +278,14 @@ function bubbleChart() {
      */
     function moveToYears(alpha) {
         return function (d) {
-            var target = yearCenters[d.year];
-            d.x = d.x + (target.x - d.x) * damper * alpha * 1.1;
-            d.y = d.y + (target.y - d.y) * damper * alpha * 1.1;
+            // var xTarget = function (d) {
+            //     return d.xPos;
+            // };
+            // var yTarget = function (d) {
+            //     return d.yPos;
+            // };
+            d.x = d.x + (d.xPos - d.x) * damper * alpha * 1.1;
+            d.y = d.y + (d.yPos - d.y) * damper * alpha * 1.1;
         };
     }
 
@@ -430,7 +439,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/WorldPop_Sortiert_Klein.csv', display);
+d3.csv('data/WorldPop_xyPos.csv', display);
 
 // setup the buttons.
 // setupButtons();
