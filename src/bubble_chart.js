@@ -95,8 +95,8 @@ function bubbleChart() {
                 radius: radiusScale(+d.Year1950),
                 value: d.Year1950,
                 name: d.Location,
-                x: 0,
-                y: 0
+                x: (width / 2 - 400) + Math.random() * 800,
+                y: Math.random() * 900
             };
         });
 
@@ -154,14 +154,12 @@ function bubbleChart() {
         // Initially, their radius (r attribute) will be 0.
 
         bubbles.enter().append("svg")
-            .classed('bubble', true)
             .attr("id", function (d) {
                 return d.id;
             })
             .append('circle')
-            .attr('r', function (d) {
-                return d.radius;
-            })
+            .classed("MainBubbles", true)
+            .attr('r', 0)
             .attr('cx',100).attr('cy',100)
             .attr('fill', fillColor)
             // .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
@@ -172,18 +170,23 @@ function bubbleChart() {
 
         bubbles
             .append("circle")
-            .attr('r', function (d) {
-            return d.radius / 10;
-        })
+            .classed("SecondaryBubbles", true)
+            .attr('r', 0)
             .attr('cx',100).attr('cy',100)
             .attr('fill', "#FF0000");
 
         // Fancy transition to make bubbles appear, ending with the
         // correct radius
-        bubbles.transition()
+        svg.selectAll(".MainBubbles").transition()
             .duration(2000)
             .attr('r', function (d) {
                 return d.radius;
+            });
+
+        svg.selectAll(".SecondaryBubbles").transition()
+            .duration(2000)
+            .attr('r', function (d) {
+                return d.radius / 10;
             });
 
         // Set initial layout to single group.
@@ -403,8 +406,6 @@ function display(error, data) {
 // }
 var buttonId = false;
 function nodesAsButtons() {
-    console.log("test");
-
     buttonId = !buttonId;
     // Toggle the bubble chart based on
     // the currently clicked button.
