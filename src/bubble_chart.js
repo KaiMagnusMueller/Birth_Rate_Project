@@ -160,16 +160,20 @@ function bubbleChart() {
                 return d.id;
             })
             .classed("container", true)
-            // .attr("viewbox", "-500 0 -200 -200")
+            .attr("viewBox", "-85 -85 1440 900")
             .append('circle')
             .classed("MainBubbles", true)
             .attr('r', 0)
-            .attr('cx',function (d) {
-                return d.radius;
-            })
-            .attr('cy',function (d) {
-            return d.radius;
-        })
+
+        //     .attr('cx',function (d) {
+        //         return d.radius;
+        //     })
+        //     .attr('cy',function (d) {
+        //     return d.radius;
+        // })
+
+            // .attr('cx',100).attr('cy',100)
+
             .attr('fill', fillColor)
             // .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
             .attr('stroke-width', 1)
@@ -181,7 +185,15 @@ function bubbleChart() {
             .append("circle")
             .classed("SecondaryBubbles", true)
             .attr('r', 0)
-            .attr('cx',100).attr('cy',100)
+            // .attr('cx',100).attr('cy',100)
+
+            // .attr('cx',function (d) {
+            //     return d.radius;
+            // })
+            // .attr('cy',function (d) {
+            //     return d.radius;
+            // })
+
             .attr('fill', "#FF0000");
 
         // Fancy transition to make bubbles appear, ending with the
@@ -240,8 +252,8 @@ function bubbleChart() {
      */
     function moveToCenter(alpha) {
         return function (d) {
-            d.x = d.x + (center.x -100 - d.x) * damper * alpha;
-            d.y = d.y + (center.y -100 - d.y) * damper * alpha;
+            d.x = d.x + (center.x -150 - d.x) * damper * alpha;
+            d.y = d.y + (center.y -150 - d.y) * damper * alpha;
         };
     }
 
@@ -256,12 +268,8 @@ function bubbleChart() {
 
         force.on('tick', function (e) {
             bubbles.each(moveToYears(e.alpha))
-                .attr('cx', function (d) {
-                    return d.x;
-                })
-                .attr('cy', function (d) {
-                    return d.y;
-                });
+                .attr('cx', function (d) {return d.x;})
+                .attr('cy', function (d) {return d.y;});
         });
 
         force.start();
@@ -283,12 +291,6 @@ function bubbleChart() {
      */
     function moveToYears(alpha) {
         return function (d) {
-            // var xTarget = function (d) {
-            //     return d.xPos;
-            // };
-            // var yTarget = function (d) {
-            //     return d.yPos;
-            // };
             d.x = d.x + (d.xPos - d.x) * damper * alpha * 1.1;
             d.y = d.y + (d.yPos - d.y) * damper * alpha * 1.1;
         };
@@ -444,7 +446,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/WorldPop_xyPos.csv', display);
+d3.csv('data/Statistik_Klein.csv', display);
 
 // setup the buttons.
 // setupButtons();
