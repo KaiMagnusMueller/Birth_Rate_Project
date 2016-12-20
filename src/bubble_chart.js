@@ -160,11 +160,16 @@ function bubbleChart() {
                 return d.id;
             })
             .classed("container", true)
-            .attr("transform-origin", center)
+            // .attr("viewbox", "-500 0 -200 -200")
             .append('circle')
             .classed("MainBubbles", true)
             .attr('r', 0)
-            .attr('cx',100).attr('cy',100)
+            .attr('cx',function (d) {
+                return d.radius;
+            })
+            .attr('cy',function (d) {
+            return d.radius;
+        })
             .attr('fill', fillColor)
             // .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
             .attr('stroke-width', 1)
@@ -172,12 +177,12 @@ function bubbleChart() {
             // .on('mouseout', hideDetail)
             .on("click", nodesAsButtons);
 
-        // bubbles
-        //     .append("circle")
-        //     .classed("SecondaryBubbles", true)
-        //     .attr('r', 0)
-        //     .attr('cx',100).attr('cy',100)
-        //     .attr('fill', "#FF0000");
+        bubbles
+            .append("circle")
+            .classed("SecondaryBubbles", true)
+            .attr('r', 0)
+            .attr('cx',100).attr('cy',100)
+            .attr('fill', "#FF0000");
 
         // Fancy transition to make bubbles appear, ending with the
         // correct radius
@@ -187,11 +192,11 @@ function bubbleChart() {
                 return d.radius;
             });
 
-        // svg.selectAll(".SecondaryBubbles").transition()
-        //     .duration(2000)
-        //     .attr('r', function (d) {
-        //         return d.radius / 10;
-        //     });
+        svg.selectAll(".SecondaryBubbles").transition()
+            .duration(2000)
+            .attr('r', function (d) {
+                return d.radius / 10;
+            });
 
         // Set initial layout to single group.
         groupBubbles();
@@ -235,8 +240,8 @@ function bubbleChart() {
      */
     function moveToCenter(alpha) {
         return function (d) {
-            d.x = d.x + (center.x - d.x) * damper * alpha;
-            d.y = d.y + (center.y - d.y) * damper * alpha;
+            d.x = d.x + (center.x -100 - d.x) * damper * alpha;
+            d.y = d.y + (center.y -100 - d.y) * damper * alpha;
         };
     }
 
