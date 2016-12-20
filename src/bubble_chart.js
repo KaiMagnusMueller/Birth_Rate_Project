@@ -268,8 +268,8 @@ function bubbleChart() {
 
         force.on('tick', function (e) {
             bubbles.each(moveToYears(e.alpha))
-                .attr('cx', function (d) {return d.x;})
-                .attr('cy', function (d) {return d.y;});
+                .attr('x', function (d) {return d.x;})
+                .attr('y', function (d) {return d.y;});
         });
 
         force.start();
