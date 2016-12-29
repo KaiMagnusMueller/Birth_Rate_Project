@@ -94,6 +94,7 @@ function bubbleChart() {
                 id: d.Location,
                 radius: radiusScale(+d.Year1950),
                 value: d.Year1950,
+                valueBirth: radiusScale(+d.Births1950),
                 name: d.Location,
                 x: (width / 2 - 400) + Math.random() * 800,
                 y: Math.random() * 900,
@@ -207,7 +208,7 @@ function bubbleChart() {
         svg.selectAll(".SecondaryBubbles").transition()
             .duration(2000)
             .attr('r', function (d) {
-                return d.radius / 10;
+                return d.valueBirth;
             });
 
         // Set initial layout to single group.
@@ -252,8 +253,8 @@ function bubbleChart() {
      */
     function moveToCenter(alpha) {
         return function (d) {
-            d.x = d.x + (center.x -150 - d.x) * damper * alpha;
-            d.y = d.y + (center.y -150 - d.y) * damper * alpha;
+            d.x = d.x + (center.x -85 - d.x) * damper * alpha;
+            d.y = d.y + (center.y -85 - d.y) * damper * alpha;
         };
     }
 
@@ -291,8 +292,8 @@ function bubbleChart() {
      */
     function moveToYears(alpha) {
         return function (d) {
-            d.x = d.x + (d.xPos - d.x) * damper * alpha * 1.1;
-            d.y = d.y + (d.yPos - d.y) * damper * alpha * 1.1;
+            d.x = d.x + (d.xPos - 85 - d.x) * damper * alpha * 1.1;
+            d.y = d.y + (d.yPos - 85 - d.y) * damper * alpha * 1.1;
         };
     }
 
