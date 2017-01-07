@@ -33,7 +33,7 @@ function bubbleChart() {
 
     // Used when setting up force and
     // moving around nodes
-    var damper = 0.102;
+    var damper = 0.095;
 
     // These will be set in create_nodes and create_vis
     var svg = null;
@@ -50,7 +50,7 @@ function bubbleChart() {
     // Dividing by 8 scales down the charge to be
     // appropriate for the visualization dimensions.
     function charge(d) {
-        return -Math.pow(d.radius, 2.0) / 8;
+        return -Math.pow(d.radius, 2.0) / 6;
     }
 
     // Here we create a force layout and
