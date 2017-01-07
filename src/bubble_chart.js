@@ -144,8 +144,6 @@ function bubbleChart() {
             .attr('width', width)
             .attr('height', height);
 
-        // var bubbleGroup = svg.append("g");
-
         // Bind nodes data to what will become DOM elements to represent them.
         bubbles = svg.selectAll('.bubble')
             .data(nodes, function (d) {
@@ -155,7 +153,6 @@ function bubbleChart() {
         // Create new circle elements each with class `bubble`.
         // There will be one circle.bubble for each object in the nodes array.
         // Initially, their radius (r attribute) will be 0.
-
         bubbles.enter().append("svg")
             .attr("id", function (d) {
                 return d.id;
@@ -226,10 +223,10 @@ function bubbleChart() {
 
         force.on('tick', function (e) {
             bubbles.each(moveToCenter(e.alpha))
-                .attr('x', function (d) {
+                .attr('cx', function (d) {
                     return d.x;
                 })
-                .attr('y', function (d) {
+                .attr('cy', function (d) {
                     return d.y;
                 });
         });
