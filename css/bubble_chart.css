@@ -19,6 +19,10 @@ a, a:visited, a:active {
 
 }
 
+.container {
+    transform-origin: center;
+}
+
 .button.active {
     background: #000;
     color: #fff;

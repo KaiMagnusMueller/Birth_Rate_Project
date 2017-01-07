@@ -33,7 +33,7 @@ function bubbleChart() {
 
     // Used when setting up force and
     // moving around nodes
-    var damper = 0.102;
+    var damper = 0.095;
 
     // These will be set in create_nodes and create_vis
     var svg = null;
@@ -50,7 +50,7 @@ function bubbleChart() {
     // Dividing by 8 scales down the charge to be
     // appropriate for the visualization dimensions.
     function charge(d) {
-        return -Math.pow(d.radius, 2.0) / 8;
+        return -Math.pow(d.radius, 2.0) / 6;
     }
 
     // Here we create a force layout and
@@ -94,9 +94,12 @@ function bubbleChart() {
                 id: d.Location,
                 radius: radiusScale(+d.Year1950),
                 value: d.Year1950,
+                valueBirth: radiusScale(+d.Births1950),
                 name: d.Location,
                 x: (width / 2 - 400) + Math.random() * 800,
-                y: Math.random() * 900
+                y: Math.random() * 900,
+                xPos: d.xPosdata,
+                yPos: d.yPosdata
             };
         });
 
@@ -150,12 +153,25 @@ function bubbleChart() {
         // Create new circle elements each with class `bubble`.
         // There will be one circle.bubble for each object in the nodes array.
         // Initially, their radius (r attribute) will be 0.
-        bubbles.enter().append('circle')
-            .classed('bubble', true)
+        bubbles.enter().append("svg")
             .attr("id", function (d) {
                 return d.id;
             })
+            .classed("container", true)
+            .attr("viewBox", "-85 -85 1440 900")
+            .append('circle')
+            .classed("MainBubbles", true)
             .attr('r', 0)
+
+        //     .attr('cx',function (d) {
+        //         return d.radius;
+        //     })
+        //     .attr('cy',function (d) {
+        //     return d.radius;
+        // })
+
+            // .attr('cx',100).attr('cy',100)
+
             .attr('fill', fillColor)
             // .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
             .attr('stroke-width', 1)
@@ -163,12 +179,33 @@ function bubbleChart() {
             // .on('mouseout', hideDetail)
             .on("click", nodesAsButtons);
 
+        bubbles
+            .append("circle")
+            .classed("SecondaryBubbles", true)
+            .attr('r', 0)
+            // .attr('cx',100).attr('cy',100)
+
+            // .attr('cx',function (d) {
+            //     return d.radius;
+            // })
+            // .attr('cy',function (d) {
+            //     return d.radius;
+            // })
+
+            .attr('fill', "#FF0000");
+
         // Fancy transition to make bubbles appear, ending with the
         // correct radius
-        bubbles.transition()
+        svg.selectAll(".MainBubbles").transition()
             .duration(2000)
             .attr('r', function (d) {
                 return d.radius;
+            });
+
+        svg.selectAll(".SecondaryBubbles").transition()
+            .duration(2000)
+            .attr('r', function (d) {
+                return d.valueBirth;
             });
 
         // Set initial layout to single group.
@@ -213,8 +250,8 @@ function bubbleChart() {
      */
     function moveToCenter(alpha) {
         return function (d) {
-            d.x = d.x + (center.x - d.x) * damper * alpha;
-            d.y = d.y + (center.y - d.y) * damper * alpha;
+            d.x = d.x + (center.x -85 - d.x) * damper * alpha;
+            d.y = d.y + (center.y -85 - d.y) * damper * alpha;
         };
     }
 
@@ -229,12 +266,8 @@ function bubbleChart() {
 
         force.on('tick', function (e) {
             bubbles.each(moveToYears(e.alpha))
-                .attr('cx', function (d) {
-                    return d.x;
-                })
-                .attr('cy', function (d) {
-                    return d.y;
-                });
+                .attr('x', function (d) {return d.x;})
+                .attr('y', function (d) {return d.y;});
         });
 
         force.start();
@@ -256,9 +289,8 @@ function bubbleChart() {
      */
     function moveToYears(alpha) {
         return function (d) {
-            var target = yearCenters[d.year];
-            d.x = d.x + (target.x - d.x) * damper * alpha * 1.1;
-            d.y = d.y + (target.y - d.y) * damper * alpha * 1.1;
+            d.x = d.x + (d.xPos - 85 - d.x) * damper * alpha * 1.1;
+            d.y = d.y + (d.yPos - 85 - d.y) * damper * alpha * 1.1;
         };
     }
 
@@ -388,8 +420,6 @@ function display(error, data) {
 // }
 var buttonId = false;
 function nodesAsButtons() {
-    console.log("test");
-
     buttonId = !buttonId;
     // Toggle the bubble chart based on
     // the currently clicked button.
@@ -414,7 +444,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/WorldPop_Sortiert_Klein.csv', display);
+d3.csv('data/Statistik_Klein.csv', display);
 
 // setup the buttons.
 // setupButtons();
